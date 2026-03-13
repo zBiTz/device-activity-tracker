@@ -8,10 +8,10 @@ services:
     extra_hosts:
       - "localhost:host-gateway"
     ports:
-      - "${BACKEND_PORT:-3001}:${BACKEND_PORT:-3001}"
+      - "0.0.0.0:${BACKEND_PORT:-3001}:${BACKEND_PORT:-3001}"
     environment:
       - PORT=${BACKEND_PORT:-3001}
-      - SIGNAL_API_URL=${SIGNAL_API_URL:-http://localhost:8080}
+      - SIGNAL_API_URL=${SIGNAL_API_URL:-http://signal-api:8080}
       - NODE_ENV=${NODE_ENV:-production}
     volumes:
       # Persist WhatsApp auth state
@@ -28,7 +28,7 @@ services:
         - PORT=${CLIENT_PORT:-3000}
         - REACT_APP_API_URL=${BACKEND_URL:-http://localhost:3001}
     ports:
-      - "${CLIENT_PORT:-3000}:${CLIENT_PORT:-3000}"
+      - "0.0.0.0:${CLIENT_PORT:-3000}:${CLIENT_PORT:-3000}"
     environment:
       - PORT=${CLIENT_PORT:-3000}
     depends_on:
@@ -39,8 +39,10 @@ services:
 
   signal-api:
     image: bbernhard/signal-cli-rest-api
-    ports:
-      - "8080:8080"
+    # signal-api is intentionally NOT exposed on the host; it is only
+    # reachable by other containers on app-network via http://signal-api:8080
+    expose:
+      - "8080"
     environment:
       - MODE=json-rpc
     restart: unless-stopped
