@@ -55,9 +55,9 @@ async function connectToWhatsApp() {
         auth: state,
         // Pin a known-working WhatsApp Web version to avoid "Connection Failure" errors
         // caused by WhatsApp rejecting outdated/unrecognised version tuples.
-        version: [2, 3000, 1025190524],
+        version: [2, 3000, 1033893291],
         // Use a realistic browser string; "Ubuntu/Chrome" is widely accepted by WA servers.
-        browser: ['Ubuntu', 'Chrome', '22.04.4'],
+        browser: ['Chrome', 'Windows', '146.0.7680.76'],
         logger: pino({ level: 'silent' }),
         markOnlineOnConnect: true,
         printQRInTerminal: false,
